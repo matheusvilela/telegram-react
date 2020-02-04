@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/telegram-react/static/css/main.137eebcb.chunk.css",
+    "main.css": "/telegram-react/static/css/main.8aee611c.chunk.css",
     "main.js": "/telegram-react/static/js/main.6c9e5a0d.chunk.js",
     "main.js.map": "/telegram-react/static/js/main.6c9e5a0d.chunk.js.map",
     "runtime-main.js": "/telegram-react/static/js/runtime-main.26529e5b.js",
@@ -17,12 +17,12 @@
     "abc18bdb20c629e66d11.worker.js": "/telegram-react/abc18bdb20c629e66d11.worker.js",
     "abc18bdb20c629e66d11.worker.js.map": "/telegram-react/abc18bdb20c629e66d11.worker.js.map",
     "index.html": "/telegram-react/index.html",
-    "precache-manifest.6dddf66f1d8d77fc0d1cd06e420919b0.js": "/telegram-react/precache-manifest.6dddf66f1d8d77fc0d1cd06e420919b0.js",
+    "precache-manifest.bc67831b2bdcce7400a8dae006ba8279.js": "/telegram-react/precache-manifest.bc67831b2bdcce7400a8dae006ba8279.js",
     "service-worker.js": "/telegram-react/service-worker.js",
     "static/css/4.1af9da3a.chunk.css.map": "/telegram-react/static/css/4.1af9da3a.chunk.css.map",
-    "static/css/main.137eebcb.chunk.css.map": "/telegram-react/static/css/main.137eebcb.chunk.css.map",
+    "static/css/main.8aee611c.chunk.css.map": "/telegram-react/static/css/main.8aee611c.chunk.css.map",
     "static/js/2.db61423c.chunk.js.LICENSE.txt": "/telegram-react/static/js/2.db61423c.chunk.js.LICENSE.txt",
-    "static/media/DialogDetails.css": "/telegram-react/static/media/bg_light.9b7ea631.jpg",
+    "static/media/DialogDetails.css": "/telegram-react/static/media/bg_light.7e3d8b47.jpg",
     "static/media/Message.css": "/telegram-react/static/media/bubble-tail-left.cbb4eead.svg",
     "static/media/InputBoxControl.css": "/telegram-react/static/media/bubble-tail-right.b159f8b0.svg",
     "static/media/ForwardTargetChat.css": "/telegram-react/static/media/check.71da7469.svg",
@@ -31,7 +31,7 @@
   "entrypoints": [
     "static/js/runtime-main.26529e5b.js",
     "static/js/2.db61423c.chunk.js",
-    "static/css/main.137eebcb.chunk.css",
+    "static/css/main.8aee611c.chunk.css",
     "static/js/main.6c9e5a0d.chunk.js"
   ]
 }
