@@ -18,8 +18,15 @@
 }
 
 .light .dialog-details {
-    background-image: url('../../Assets/bg.jpg');
+    background-image: url('../../Assets/bg_light.jpg');
     background-size: cover;
+    background-position: 100% 50%;
+}
+
+.dark .dialog-details {
+    background-image: url('../../Assets/bg_dark.jpg');
+    background-size: cover;
+    background-position: 100% 50%;
 }
 
 .dialog-details-third-column {
