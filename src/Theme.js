@@ -78,10 +78,10 @@ function updateDarkTheme(theme) {
     style.setProperty('--header-color', '#ffffff');
     style.setProperty('--header-subtle-color', theme.palette.text.secondary);
 
-    style.setProperty('--badge-unmuted', '#4DCD5E');
+    style.setProperty('--badge-unmuted', theme.palette.primary.main);
     style.setProperty('--badge-muted', 'rgba(255, 255, 255, 0.5)');
 
-    style.setProperty('--online-indicator', '#0AC630');
+    style.setProperty('--online-indicator', '#D1F1FF');
 
     style.setProperty('--message-service-color', '#FFFFFF');
     style.setProperty('--message-service-background', '#303030');
