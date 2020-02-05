@@ -112,7 +112,11 @@ class DialogDetails extends Component {
         const { isChatDetailsVisible } = AppStore;
 
         return (
-            <div className={classNames('dialog-details', { 'dialog-details-third-column': isChatDetailsVisible })}>
+            <div
+                className={classNames('dialog-details', {
+                    'dialog-details-third-column': isChatDetailsVisible,
+                    hidden: chatId === 0
+                })}>
                 <HeaderPlayer />
                 <Header chatId={chatId} />
                 <MessagesList ref={ref => (this.messagesList = ref)} chatId={chatId} messageId={messageId} />

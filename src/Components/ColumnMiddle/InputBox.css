@@ -24,6 +24,12 @@
     max-width: 695px;
     margin: 0 auto;
 }
+/* SM */
+@media (max-width: 767.98px) {
+    .inputbox {
+        padding: 10px 0;
+    }
+}
 
 .inputbox-icon-button {
     padding: 6px;

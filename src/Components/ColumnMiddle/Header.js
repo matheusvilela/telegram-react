@@ -8,6 +8,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import { withTranslation } from 'react-i18next';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
@@ -35,6 +36,7 @@ import AppStore from '../../Stores/ApplicationStore';
 import ChatStore from '../../Stores/ChatStore';
 import MessageStore from '../../Stores/MessageStore';
 import TdLibController from '../../Controllers/TdLibController';
+import { closeChat } from '../../Actions/Client';
 import './Header.css';
 
 class Header extends Component {
@@ -274,11 +276,16 @@ class Header extends Component {
                         <span className='header-status-tail' />
                     </div>
                 ) : (
-                    <HeaderChat
-                        className={classNames('grow', 'cursor-pointer')}
-                        chatId={chatId}
-                        onClick={this.openChatDetails}
-                    />
+                    <div className='header-container'>
+                        <IconButton className='header-left-button' onMouseDown={closeChat}>
+                            <ArrowBackIcon />
+                        </IconButton>
+                        <HeaderChat
+                            className={classNames('grow', 'cursor-pointer')}
+                            chatId={chatId}
+                            onClick={this.openChatDetails}
+                        />
+                    </div>
                 )}
                 <PinnedMessage chatId={chatId} />
                 {chat && (
