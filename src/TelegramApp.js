@@ -192,9 +192,7 @@ class TelegramApp extends Component {
         //     </React.Suspense>
         // );
 
-        if (nativeMobile) {
-            page = <NativeAppPage />;
-        } else if (inactive) {
+        if (inactive) {
             page = <InactivePage />;
         } else if (authorizationState) {
             switch (authorizationState['@type']) {

@@ -80,3 +80,10 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+/* SM */
+@media (max-width: 767.98px) {
+    .reply-wrapper {
+        max-width: 100%;
+    }
+}

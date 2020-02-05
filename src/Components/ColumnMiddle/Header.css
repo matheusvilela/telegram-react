@@ -25,6 +25,11 @@
     border-color: var(--border);
 }
 
+.header-container {
+    display: flex;
+    width: 100%;
+}
+
 .header-title {
     padding: 15px 19px 15px;
 }
@@ -67,6 +72,8 @@
 }
 
 .header-left-button {
+    display: none;
+    flex-grow: 0;
     margin: 8px -2px 8px 12px;
 }
 
@@ -139,4 +146,10 @@
     border: 0;
     outline: none;
     box-shadow: 0 0 0 0;
+}
+
+@media (max-width: 767.98px) {
+    .header-left-button {
+        display: block;
+    }
 }

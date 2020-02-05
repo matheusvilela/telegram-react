@@ -24,3 +24,10 @@
 .message-out .voice-note-meta {
     color: var(--message-out-subtle-color);
 }
+
+/* SM */
+@media (max-width: 767.98px) {
+    .voice-note-content {
+        min-width: 150px;
+    }
+}

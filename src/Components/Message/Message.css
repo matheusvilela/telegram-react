@@ -115,6 +115,13 @@ pre code {
     justify-content: center;
 }
 
+/* SM */
+@media (max-width: 767.98px) {
+    .message-padding {
+        display: none;
+    }
+}
+
 .message-tile-padding {
     min-width: var(--tile-size-small);
 }
@@ -362,4 +369,12 @@ pre code {
 
 .message-out .message-control-disabled {
     color: var(--text-disabled);
+}
+
+/* SM */
+@media (max-width: 767.98px) {
+    .message-wrapper {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
 }
