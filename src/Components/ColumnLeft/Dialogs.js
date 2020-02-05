@@ -29,10 +29,11 @@ class Dialogs extends Component {
         this.archiveListRef = React.createRef();
         this.dialogsHeaderRef = React.createRef();
 
-        const { isChatDetailsVisible } = AppStore;
+        const { chatId, isChatDetailsVisible } = AppStore;
 
         this.state = {
             cache: null,
+            chatId,
 
             showArchive: false,
             archiveTitle: null,
@@ -53,6 +54,7 @@ class Dialogs extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         const {
             cache,
+            chatId,
             showArchive,
             archiveTitle,
             mainItems,
@@ -65,6 +67,10 @@ class Dialogs extends Component {
         } = this.state;
 
         if (nextState.cache !== cache) {
+            return true;
+        }
+
+        if (nextState.chatId !== chatId) {
             return true;
         }
 
@@ -110,6 +116,7 @@ class Dialogs extends Component {
     componentDidMount() {
         this.loadCache();
 
+        AppStore.on('clientUpdateChatId', this.onClientUpdateChatId);
         AppStore.on('clientUpdateChatDetailsVisibility', this.onClientUpdateChatDetailsVisibility);
         AppStore.on('clientUpdateSearchChat', this.onClientUpdateSearchChat);
         AppStore.on('clientUpdateThemeChange', this.onClientUpdateThemeChange);
@@ -127,6 +134,7 @@ class Dialogs extends Component {
     }
 
     componentWillUnmount() {
+        AppStore.off('clientUpdateChatId', this.onClientUpdateChatId);
         AppStore.off('clientUpdateChatDetailsVisibility', this.onClientUpdateChatDetailsVisibility);
         AppStore.off('clientUpdateSearchChat', this.onClientUpdateSearchChat);
         AppStore.off('clientUpdateThemeChange', this.onClientUpdateThemeChange);
@@ -172,6 +180,12 @@ class Dialogs extends Component {
 
         CacheStore.saveChats(mainChatIds, archiveChatIds);
     }
+
+    onClientUpdateChatId = update => {
+        const { nextChatId: chatId } = update;
+
+        this.setState({ chatId });
+    };
 
     onUpdateChatOrder = update => {
         const { chat_id } = update;
@@ -327,6 +341,7 @@ class Dialogs extends Component {
     render() {
         const {
             cache,
+            chatId,
             showArchive,
             archiveTitle,
             mainItems,
@@ -344,7 +359,8 @@ class Dialogs extends Component {
         return (
             <div
                 className={classNames('dialogs', {
-                    'dialogs-third-column': isChatDetailsVisible
+                    'dialogs-third-column': isChatDetailsVisible,
+                    hidden: chatId !== 0
                 })}>
                 <DialogsHeader
                     ref={this.dialogsHeaderRef}

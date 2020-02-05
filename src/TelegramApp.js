@@ -216,9 +216,7 @@ class TelegramApp extends Component {
         //     </React.Suspense>
         // );
 
-        if (nativeMobile) {
-            page = <NativeAppPage />;
-        } else if (inactive) {
+        if (inactive) {
             page = <InactivePage />;
         } else if (authorizationState) {
             switch (authorizationState['@type']) {
@@ -430,11 +428,6 @@ window.onpopstate = function() {
     window.history.go(1);
 };
 
-const enhance = compose(
-    withLanguage,
-    withTranslation(),
-    withTheme,
-    withStyles(styles, { withTheme: true })
-);
+const enhance = compose(withLanguage, withTranslation(), withTheme, withStyles(styles, { withTheme: true }));
 
 export default enhance(TelegramApp);

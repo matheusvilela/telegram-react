@@ -28,3 +28,13 @@
 .dialogs-third-column {
     width: calc(25% - 0px);
 }
+
+/* SM */
+@media (max-width: 767.98px) {
+    .dialogs {
+        width: 100%;
+    }
+    .hidden {
+        display: none;
+    }
+}

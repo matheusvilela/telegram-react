@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withTranslation } from 'react-i18next';
 import { compose } from 'recompose';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
@@ -40,6 +41,7 @@ import SupergroupStore from '../../Stores/SupergroupStore';
 import MessageStore from '../../Stores/MessageStore';
 import AppStore from '../../Stores/ApplicationStore';
 import TdLibController from '../../Controllers/TdLibController';
+import { closeChat } from '../../Actions/Client';
 import './Header.css';
 
 const styles = theme => ({
@@ -303,11 +305,16 @@ class Header extends Component {
                         <span className='header-status-tail' />
                     </div>
                 ) : (
-                    <HeaderChat
-                        className={classNames('grow', 'cursor-pointer')}
-                        chatId={chatId}
-                        onClick={this.openChatDetails}
-                    />
+                    <div className='header-container'>
+                        <IconButton className='header-left-button' onMouseDown={closeChat}>
+                            <ArrowBackIcon />
+                        </IconButton>
+                        <HeaderChat
+                            className={classNames('grow', 'cursor-pointer')}
+                            chatId={chatId}
+                            onClick={this.openChatDetails}
+                        />
+                    </div>
                 )}
                 <PinnedMessage chatId={chatId} />
                 {chat && (
@@ -364,9 +371,6 @@ class Header extends Component {
     }
 }
 
-const enhance = compose(
-    withTranslation(),
-    withStyles(styles, { withTheme: true })
-);
+const enhance = compose(withTranslation(), withStyles(styles, { withTheme: true }));
 
 export default enhance(Header);

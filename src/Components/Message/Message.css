@@ -115,6 +115,13 @@ pre code {
     justify-content: center;
 }
 
+/* SM */
+@media (max-width: 767.98px) {
+    .message-padding {
+        display: none;
+    }
+}
+
 .message-tile-padding {
     min-width: 33px;
 }
@@ -301,4 +308,12 @@ pre code {
 
 .menu-list {
     min-width: 150px;
+}
+
+/* SM */
+@media (max-width: 767.98px) {
+    .message-wrapper {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
 }

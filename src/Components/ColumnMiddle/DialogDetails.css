@@ -32,3 +32,14 @@
 .dialog-details-third-column {
     width: calc(50% - 0px);
 }
+
+/* SM */
+@media (max-width: 767.98px) {
+    .dialog-details {
+        width: 100%;
+    }
+    .hidden,
+    .dialog-details-third-column {
+        display: none;
+    }
+}
