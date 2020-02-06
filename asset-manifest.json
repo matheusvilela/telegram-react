@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/telegram-react/static/css/main.2aa57cb1.chunk.css",
-    "main.js": "/telegram-react/static/js/main.a48cb736.chunk.js",
-    "main.js.map": "/telegram-react/static/js/main.a48cb736.chunk.js.map",
+    "main.css": "/telegram-react/static/css/main.60688292.chunk.css",
+    "main.js": "/telegram-react/static/js/main.fa1ab209.chunk.js",
+    "main.js.map": "/telegram-react/static/js/main.fa1ab209.chunk.js.map",
     "runtime-main.js": "/telegram-react/static/js/runtime-main.06adf6fe.js",
     "runtime-main.js.map": "/telegram-react/static/js/runtime-main.06adf6fe.js.map",
     "static/js/2.e04447e5.chunk.js": "/telegram-react/static/js/2.e04447e5.chunk.js",
@@ -17,10 +17,10 @@
     "abc18bdb20c629e66d11.worker.js": "/telegram-react/abc18bdb20c629e66d11.worker.js",
     "abc18bdb20c629e66d11.worker.js.map": "/telegram-react/abc18bdb20c629e66d11.worker.js.map",
     "index.html": "/telegram-react/index.html",
-    "precache-manifest.3ef72863843da19d2198498c04423937.js": "/telegram-react/precache-manifest.3ef72863843da19d2198498c04423937.js",
+    "precache-manifest.43e02a9866a9b42129421e93c60e71bb.js": "/telegram-react/precache-manifest.43e02a9866a9b42129421e93c60e71bb.js",
     "service-worker.js": "/telegram-react/service-worker.js",
     "static/css/4.1af9da3a.chunk.css.map": "/telegram-react/static/css/4.1af9da3a.chunk.css.map",
-    "static/css/main.2aa57cb1.chunk.css.map": "/telegram-react/static/css/main.2aa57cb1.chunk.css.map",
+    "static/css/main.60688292.chunk.css.map": "/telegram-react/static/css/main.60688292.chunk.css.map",
     "static/js/2.e04447e5.chunk.js.LICENSE.txt": "/telegram-react/static/js/2.e04447e5.chunk.js.LICENSE.txt",
     "static/media/DialogDetails.css": "/telegram-react/static/media/bg_light.7e3d8b47.jpg",
     "static/media/Message.css": "/telegram-react/static/media/bubble-tail-left.cbb4eead.svg",
@@ -31,7 +31,7 @@
   "entrypoints": [
     "static/js/runtime-main.06adf6fe.js",
     "static/js/2.e04447e5.chunk.js",
-    "static/css/main.2aa57cb1.chunk.css",
-    "static/js/main.a48cb736.chunk.js"
+    "static/css/main.60688292.chunk.css",
+    "static/js/main.fa1ab209.chunk.js"
   ]
 }
