@@ -26,3 +26,19 @@
 .media-info-row {
     overflow: hidden;
 }
+
+/* SM */
+@media (max-width: 767.98px) {
+    .media-viewer-control-wrapper > .chat-tile,
+    .media-viewer-control-wrapper > .user-tile {
+        display: none;
+    }
+    .media-viewer-control-wrapper {
+        padding: 8px;
+        min-height: 68px;
+        box-sizing: border-box;
+    }
+    .media-viewer-control-content {
+        margin-left: 0;
+    }
+}
