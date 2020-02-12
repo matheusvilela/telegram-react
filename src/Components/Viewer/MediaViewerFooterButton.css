@@ -23,3 +23,10 @@
     opacity: 1;
     background: rgba(0, 0, 0, 0.2);
 }
+
+/* SM */
+@media (max-width: 767.98px) {
+    .media-viewer-footer-button {
+        padding: 20px 0;
+    }
+}
