@@ -20,7 +20,7 @@
 
 /* XSM */
 
-@media (max-width: 240px) {
+@media (max-width: 320px) {
     .auth-caption {
         height: 56px;
     }

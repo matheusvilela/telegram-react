@@ -12,6 +12,7 @@
     "dateformat": "^3.0.3",
     "emoji-mart": "^2.10.0",
     "emoji-regex": "^8.0.0",
+    "es-abstract": "^1.14.2",
     "events": "^3.0.0",
     "i18next": "^15.0.7",
     "i18next-localstorage-backend": "^2.1.2",
