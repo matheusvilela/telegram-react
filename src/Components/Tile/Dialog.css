@@ -96,3 +96,11 @@
     align-items: center;
     user-select: none;
 }
+
+/* XMS */
+
+@media (max-width: 320px) {
+    .dialog {
+        margin: 0 0px;
+    }
+}

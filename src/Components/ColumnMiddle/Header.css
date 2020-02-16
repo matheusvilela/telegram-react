@@ -149,3 +149,17 @@
         display: block;
     }
 }
+
+@media (max-width: 320px) {
+    .header-master {
+        width: 100%;
+        height: 40px;
+    }
+    .header-left-button {
+        margin: 0;
+    }
+
+    .header-right-button {
+        margin: 0;
+    }
+}
