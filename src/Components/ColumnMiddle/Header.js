@@ -291,43 +291,49 @@ class Header extends Component {
         }
 
         control = control || (
-            <div className='header-details'>
-                {showProgressAnimation ? (
-                    <div
-                        className={classNames('header-status', 'grow', chat ? 'cursor-pointer' : 'cursor-default')}
-                        onClick={this.openChatDetails}>
-                        <span className='header-status-content'>{title}</span>
-                        <HeaderProgress />
-                        <span
-                            className={classNames('header-status-title', { 'header-status-accent': isAccentSubtitle })}>
-                            {subtitle}
-                        </span>
-                        <span className='header-status-tail' />
-                    </div>
-                ) : (
-                    <div className='header-container'>
-                        <IconButton className='header-left-button' onMouseDown={closeChat}>
-                            <ArrowBackIcon />
-                        </IconButton>
-                        <HeaderChat
-                            className={classNames('grow', 'cursor-pointer')}
-                            chatId={chatId}
-                            onClick={this.openChatDetails}
-                        />
-                    </div>
-                )}
-                <PinnedMessage chatId={chatId} />
-                {chat && (
-                    <>
-                        <IconButton
-                            className={classes.messageSearchIconButton}
-                            aria-label='Search'
-                            onClick={this.handleSearchChat}>
-                            <SearchIcon />
-                        </IconButton>
-                        <MainMenuButton openChatDetails={this.openChatDetails} />
-                    </>
-                )}
+            <div>
+                <div className='header-details'>
+                    {showProgressAnimation ? (
+                        <div
+                            className={classNames('header-status', 'grow', chat ? 'cursor-pointer' : 'cursor-default')}
+                            onClick={this.openChatDetails}>
+                            <span className='header-status-content'>{title}</span>
+                            <HeaderProgress />
+                            <span
+                                className={classNames('header-status-title', {
+                                    'header-status-accent': isAccentSubtitle
+                                })}>
+                                {subtitle}
+                            </span>
+                            <span className='header-status-tail' />
+                        </div>
+                    ) : (
+                        <div className='header-container'>
+                            <IconButton className='header-left-button' onMouseDown={closeChat}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                            <HeaderChat
+                                className={classNames('grow', 'cursor-pointer')}
+                                chatId={chatId}
+                                onClick={this.openChatDetails}
+                            />
+                        </div>
+                    )}
+                    {chat && (
+                        <>
+                            <IconButton
+                                className={classes.messageSearchIconButton}
+                                aria-label='Search'
+                                onClick={this.handleSearchChat}>
+                                <SearchIcon />
+                            </IconButton>
+                            <MainMenuButton openChatDetails={this.openChatDetails} />
+                        </>
+                    )}
+                </div>
+                <div>
+                    <PinnedMessage chatId={chatId} />
+                </div>
             </div>
         );
 
@@ -371,6 +377,9 @@ class Header extends Component {
     }
 }
 
-const enhance = compose(withTranslation(), withStyles(styles, { withTheme: true }));
+const enhance = compose(
+    withTranslation(),
+    withStyles(styles, { withTheme: true })
+);
 
 export default enhance(Header);
