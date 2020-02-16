@@ -93,7 +93,7 @@
 /* XSM */
 @media (max-width: 320px) {
     .chat-tile {
-        height: 35px;
-        width: 35px;
+        height: 35px !important;
+        width: 35px !important;
     }
 }

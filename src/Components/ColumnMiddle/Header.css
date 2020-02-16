@@ -162,4 +162,17 @@
     .header-right-button {
         margin: 0;
     }
+    .header-details {
+        width: 100%;
+        height: 40px;
+    }
+    .header-chat {
+        margin-left: 0 !important;
+    }
+    .header-chat-subtitle {
+        font-size: 0.8rem !important;
+    }
+    .header-status {
+        font: 1.1rem / normal 'Product Sans', 'Roboto', sans-serif;
+    }
 }

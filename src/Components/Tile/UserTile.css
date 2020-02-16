@@ -27,3 +27,11 @@
     height: 120px;
     width: 120px;
 }
+
+/* XSM */
+
+@media (max-width: 320px) {
+    .user-tile.tile-small {
+        display: none;
+    }
+}

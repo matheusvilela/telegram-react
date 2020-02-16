@@ -133,4 +133,7 @@
     .MuiFormLabel-root {
         font-size: 0.9rem;
     }
+    .MuiIconButton-root {
+        padding: 6px;
+    }
 }

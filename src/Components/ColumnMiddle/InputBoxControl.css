@@ -143,3 +143,22 @@
     box-shadow: 0 1px 2px 0 rgba(16, 35, 47, 0.15);
     background: var(--panel-background);
 }
+
+/* XSM */
+@media (max-width: 320px) {
+    .inputbox-send-button-background {
+        margin: 0;
+        width: 36px;
+        height: 36px;
+        min-width: 0px;
+    }
+    .inputbox-icon-button {
+        margin: 0;
+    }
+    .inputbox-bubble {
+        margin-right: 2px;
+    }
+    #inputbox-message {
+        padding: 5px 0 7px 0;
+    }
+}

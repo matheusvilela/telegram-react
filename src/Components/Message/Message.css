@@ -321,3 +321,16 @@ pre code {
         max-width: 75%;
     }
 }
+
+/* XSM */
+
+@media (max-width: 320px) {
+    .message-short .message-content {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .message-bottom .message-wrapper {
+        padding: 3px 0px 5px;
+    }
+}
