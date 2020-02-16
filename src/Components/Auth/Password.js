@@ -158,7 +158,7 @@ class Password extends React.Component {
                     <span>{title}</span>
                     {connecting && <HeaderProgress />}
                 </Typography>
-                <Typography variant='body1' className='auth-subtitle' style={{ width: 235 }}>
+                <Typography variant='body1' className='auth-subtitle'>
                     {t('YourAccountProtectedWithPassword')}
                 </Typography>
                 <FormControl className='auth-input' fullWidth variant='outlined'>

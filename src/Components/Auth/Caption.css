@@ -17,3 +17,16 @@
     height: 160px;
     margin: 107px auto 44px;
 }
+
+/* XSM */
+
+@media (max-width: 240px) {
+    .auth-caption {
+        height: 56px;
+    }
+    .auth-caption-telegram-logo {
+        width: 56px;
+        height: 56px;
+        margin: 56px auto 44px;
+    }
+}

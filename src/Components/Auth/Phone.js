@@ -420,7 +420,7 @@ class Phone extends React.Component {
                     <span>{title}</span>
                     {connecting && <HeaderProgress />}
                 </Typography>
-                <Typography variant='body1' className='auth-subtitle' style={{ width: 254 }}>
+                <Typography variant='body1' className='auth-subtitle'>
                     {t('StartText')}
                 </Typography>
                 <Autocomplete
