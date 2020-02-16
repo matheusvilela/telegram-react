@@ -6,7 +6,6 @@
  */
 
 .poll {
-    min-width: 300px;
     background: transparent;
     user-select: none;
 }
@@ -33,7 +32,14 @@
 }
 
 .poll-options {
-    padding: 9px 0 10px;
+    padding: 10px 7px 10px 7px;
+}
+
+.poll-option-text {
+    margin-left: 41px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .poll-total-count {
