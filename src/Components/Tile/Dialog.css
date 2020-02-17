@@ -106,4 +106,7 @@
     .dialog {
         margin: 0 0px;
     }
+    .dialog-wrapper {
+        padding: 2px 4px 6px 4px !important;
+    }
 }

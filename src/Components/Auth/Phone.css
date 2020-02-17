@@ -157,4 +157,10 @@
     .MuiSwitch-root {
         height: 36px;
     }
+    .MuiListItemIcon-root {
+        min-width: 40px;
+    }
+    .MuiMenuItem-root {
+        min-height: 35px;
+    }
 }

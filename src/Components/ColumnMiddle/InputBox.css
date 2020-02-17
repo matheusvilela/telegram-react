@@ -161,4 +161,10 @@
     #inputbox-message {
         padding: 5px 0 7px 0;
     }
+    .inputbox-left-column {
+        width: 29px;
+    }
+    .inputbox-right-column {
+        margin-left: 1px;
+    }
 }
