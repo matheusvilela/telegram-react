@@ -71,9 +71,12 @@
     flex-shrink: 1;
 }
 
-.header-left-button {
+.back-button {
     display: none;
     flex-grow: 0;
+}
+
+.header-left-button {
     margin: 8px -2px 8px 12px;
 }
 
@@ -149,7 +152,7 @@
 }
 
 @media (max-width: 767.98px) {
-    .header-left-button {
+    .back-button {
         display: block;
     }
 }
