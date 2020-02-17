@@ -43,11 +43,11 @@ class Video extends React.Component {
         const fitPhotoSize = getFitSize({ width, height } || thumbnail, displaySize);
         if (!fitPhotoSize) return null;
 
-        const videoStyle = {
-            width: fitPhotoSize.width,
-            height: fitPhotoSize.height,
-            ...style
-        };
+        // const videoStyle = {
+        //     width: fitPhotoSize.width,
+        //     height: fitPhotoSize.height,
+        //     ...style
+        // };
 
         const miniSrc = minithumbnail ? 'data:image/jpeg;base64, ' + minithumbnail.data : null;
         const thumbnailSrc = getSrc(thumbnail ? thumbnail.photo : null);
@@ -61,7 +61,7 @@ class Video extends React.Component {
                     'video-caption': caption,
                     pointer: openMedia
                 })}
-                style={videoStyle}
+                // style={videoStyle}
                 onClick={openMedia}>
                 <img
                     className={classNames('video-preview', {
