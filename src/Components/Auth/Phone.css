@@ -73,3 +73,66 @@
     height: 54px;
     margin: 12px 0;
 }
+
+/* XSM */
+@media (max-width: 320px) {
+    .auth-root {
+        width: 100%;
+    }
+    .auth-title {
+        font-size: 1.1rem !important;
+        font-weight: 500;
+        margin: 5px auto 7px auto;
+    }
+
+    .sign-in-logo {
+        width: 160px;
+        height: 160px;
+        margin: 107px auto 60x;
+    }
+
+    .auth-subtitle {
+        width: 100%;
+        min-height: 42px;
+    }
+
+    .sign-in-keep {
+        width: 100%;
+        height: 20px;
+    }
+
+    .auth-input {
+        margin: 10px 0;
+    }
+
+    .auth-button {
+        margin: 0 0;
+        padding: 10px 16px;
+    }
+
+    .MuiAutocomplete-hasPopupIcon
+        .MuiAutocomplete-hasClearIcon
+        .MuiAutocomplete-inputRoot[class*='MuiOutlinedInput-root'] {
+        padding: 4px 3px !important;
+    }
+
+    .MuiAutocomplete-inputRoot[class*='MuiOutlinedInput-root'] {
+        padding: 0px !important;
+    }
+
+    .MuiFormLabel-root {
+        line-height: 0 !important;
+    }
+
+    .MuiTypography-body1 {
+        font-size: 0.9rem;
+    }
+
+    .MuiOutlinedInput-input {
+        padding: 8px 5px !important;
+    }
+
+    .MuiFormLabel-root {
+        font-size: 0.9rem;
+    }
+}

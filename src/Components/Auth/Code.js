@@ -204,7 +204,7 @@ class Code extends React.Component {
                         <EditIcon fontSize='small' />
                     </IconButton>
                 </div>
-                <Typography variant='body1' className='auth-subtitle' style={{ width: 300 }}>
+                <Typography variant='body1' className='auth-subtitle'>
                     {subtitle}
                 </Typography>
                 <TextField
