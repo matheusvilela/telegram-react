@@ -277,7 +277,7 @@ class Header extends Component {
                     </div>
                 ) : (
                     <div className='header-container'>
-                        <IconButton className='header-left-button' onMouseDown={closeChat}>
+                        <IconButton className='back-button' onMouseDown={closeChat}>
                             <ArrowBackIcon />
                         </IconButton>
                         <HeaderChat
