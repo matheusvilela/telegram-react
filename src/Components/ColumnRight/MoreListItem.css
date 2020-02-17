@@ -8,3 +8,9 @@
 .list-item {
     padding: 11px 22px;
 }
+
+@media (max-width: 320px) {
+    .list-item {
+        padding: 8px 22px;
+    }
+}
