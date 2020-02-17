@@ -13,8 +13,6 @@
     overflow: hidden;
     box-sizing: border-box;
     background: var(--panel-background);
-    max-width: 191px;
-    margin-right: 19px;
 }
 
 .pinned-message-content {
