@@ -49,6 +49,13 @@
     }
 }
 
+/* XSM */
+@media (max-width: 767.98px) {
+    .shared-photo {
+        padding: 1px;
+    }
+}
+
 .shared-photo:before {
     content: ' ';
     padding-top: 100%;

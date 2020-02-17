@@ -42,3 +42,12 @@
         margin-left: 0;
     }
 }
+
+@media (max-width: 320px) {
+    .media-viewer-control-content {
+        margin-left: 20px;
+    }
+    .media-viewer-control {
+        min-width: 0;
+    }
+}
