@@ -32,3 +32,10 @@
     height: 16px;
     color: var(--color-accent-main);
 }
+
+/* XSM */
+@media (max-width: 320px) {
+    .chat-big .dialog-title {
+        font-size: 1.1rem;
+    }
+}

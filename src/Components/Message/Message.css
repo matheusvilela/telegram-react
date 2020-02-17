@@ -333,4 +333,7 @@ pre code {
     .message-bottom .message-wrapper {
         padding: 3px 0px 5px;
     }
+    .message-content {
+        max-width: 80%;
+    }
 }
