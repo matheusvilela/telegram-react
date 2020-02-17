@@ -40,3 +40,11 @@
 .message-bubble-out .user-tile.tile-poll {
     border-color: var(--message-out-background);
 }
+
+/* XSM */
+
+@media (max-width: 320px) {
+    .user-tile.tile-small {
+        display: none;
+    }
+}

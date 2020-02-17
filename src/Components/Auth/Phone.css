@@ -135,4 +135,26 @@
     .MuiFormLabel-root {
         font-size: 0.9rem;
     }
+    .MuiIconButton-root {
+        padding: 6px;
+    }
+    .MuiSvgIcon-root {
+        font-size: 1.1rem;
+    }
+    .MuiListItemText-root {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 0.9rem;
+    }
+    .Component-listItem-430 {
+        padding: 6px 22px;
+    }
+    .MuiSwitch-thumb {
+        margin: 3px;
+        width: 16px;
+        height: 16px;
+    }
+    .MuiSwitch-root {
+        height: 36px;
+    }
 }

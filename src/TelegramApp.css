@@ -96,3 +96,12 @@ mark {
 .notification-close-button {
     padding: 4px;
 }
+
+/* XSM */
+
+@media (max-width: 320px) {
+    .page {
+        max-width: 1680px;
+        min-width: 200px;
+    }
+}

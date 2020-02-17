@@ -99,3 +99,11 @@
     transform: translate(0, 7%);
     color: #ffffff;
 }
+
+/* XSM */
+@media (max-width: 320px) {
+    .chat-tile {
+        height: 35px !important;
+        width: 35px !important;
+    }
+}

@@ -13,3 +13,11 @@
     bottom: 12px;
     border-radius: 50%;
 }
+
+/* XSM */
+@media (max-width: 320px) {
+    .scroll-down-button {
+        right: 12px;
+        bottom: 0px;
+    }
+}
