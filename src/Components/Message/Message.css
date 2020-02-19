@@ -397,4 +397,15 @@ pre code {
     .message-content {
         max-width: 80%;
     }
+    .message-text-1emoji {
+        font-size: 2em;
+    }
+
+    .message-text-2emoji {
+        font-size: 1.6em;
+    }
+
+    .message-text-3emoji {
+        font-size: 1.5em;
+    }
 }

@@ -50,3 +50,13 @@
     top: 0;
     right: 0;
 }
+
+/* SM */
+@media (max-width: 767.98px) {
+    .instant-viewer-left-column {
+        min-width: 0;
+    }
+    .instant-viewer-right-column {
+        min-width: 0;
+    }
+}

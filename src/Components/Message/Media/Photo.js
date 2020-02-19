@@ -70,11 +70,11 @@ class Photo extends React.Component {
         const fitPhotoSize = getFitSize(photoSize, displaySize, false);
         if (!fitPhotoSize) return null;
 
-        const photoStyle = {
-            width: fitPhotoSize.width,
-            height: fitPhotoSize.height,
-            ...style
-        };
+        // const photoStyle = {
+        //     width: fitPhotoSize.width,
+        //     height: fitPhotoSize.height,
+        //     ...style
+        // };
 
         const hasSrc = Boolean(src || thumbSrc || miniSrc);
 
@@ -86,7 +86,7 @@ class Photo extends React.Component {
                     'photo-caption': caption,
                     pointer: openMedia
                 })}
-                style={photoStyle}
+                // style={photoStyle}
                 onClick={openMedia}>
                 {hasSrc && (
                     <img
