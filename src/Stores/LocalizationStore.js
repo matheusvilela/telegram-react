@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { EventEmitter } from 'events';
-import Cookies from 'universal-cookie';
+import EventEmitter from './EventEmitter';
 import i18n from 'i18next';
 import LocalStorageBackend from 'i18next-localstorage-backend';
 import { initReactI18next } from 'react-i18next';
@@ -14,8 +13,7 @@ import TdLibController from '../Controllers/TdLibController';
 
 const defaultLanguage = 'en';
 const defaultNamespace = 'translation';
-const cookies = new Cookies();
-const language = cookies.get('i18next') || defaultLanguage;
+const language = localStorage.getItem('i18next') || defaultLanguage;
 
 // const detection = {
 //     // order and from where user language should be detected
@@ -40,6 +38,13 @@ i18n.use(initReactI18next).init({
     resources: {
         en: {
             settings: {
+                ContactJoinedEnabled: 'Enabled',
+                ContactJoinedDisabled: 'Disabled',
+                NotificationsEnabled: 'Enabled',
+                NotificationsDisabled: 'Disabled',
+                PreviewEnabled: 'Enabled',
+                PreviewDisabled: 'Disabled',
+                BioAbout: 'Any details such as age, occupation or city.\nExample: 23 y.o. designer from San Francisco.',
                 Archived: 'Archived',
                 Saved: 'Saved',
                 EditProfile: 'Edit Profile',
@@ -107,6 +112,14 @@ i18n.use(initReactI18next).init({
         },
         ru: {
             settings: {
+                ContactJoinedEnabled: 'Включено',
+                ContactJoinedDisabled: 'Выключено',
+                NotificationsEnabled: 'Включены',
+                NotificationsDisabled: 'Выключены',
+                PreviewEnabled: 'Включено',
+                PreviewDisabled: 'Выключено',
+                BioAbout:
+                    'Любые подробности, например: возраст, род занятий или город.\nПример: 23 года, дизайнер из Санкт-Петербурга.',
                 Archived: 'Архив',
                 Saved: 'Избранное',
                 EditProfile: 'Редактровать профиль',
@@ -206,13 +219,12 @@ class LocalizationStore extends EventEmitter {
         this.i18n = i18n;
         this.cache = cache;
 
-        this.setMaxListeners(Infinity);
         this.addTdLibListener();
     }
 
     addTdLibListener = () => {
-        TdLibController.addListener('update', this.onUpdate);
-        TdLibController.addListener('clientUpdate', this.onClientUpdate);
+        TdLibController.on('update', this.onUpdate);
+        TdLibController.on('clientUpdate', this.onClientUpdate);
     };
 
     removeTdLibListener = () => {
@@ -269,8 +281,7 @@ class LocalizationStore extends EventEmitter {
                     language_pack_id: language,
                     keys: []
                 }).then(async result => {
-                    const cookies = new Cookies();
-                    cookies.set('i18next', language);
+                    localStorage.setItem('i18next', language);
 
                     const resources = this.processStrings(language, result);
 
