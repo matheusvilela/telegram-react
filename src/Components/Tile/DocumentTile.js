@@ -14,13 +14,9 @@ import FileStore from '../../Stores/FileStore';
 import './DocumentTile.css';
 
 class DocumentTile extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            loaded: false
-        };
-    }
+    state = {
+        loaded: false
+    };
 
     componentDidMount() {
         FileStore.on('clientUpdateDocumentThumbnailBlob', this.onClientUpdateDocumentThumbnailBlob);
@@ -90,7 +86,7 @@ DocumentTile.propTypes = {
     file: PropTypes.object,
     openMedia: PropTypes.func,
     icon: PropTypes.node,
-    completeIcon: PropTypes.oneOf([PropTypes.node, PropTypes.func])
+    completeIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
 };
 
 export default DocumentTile;

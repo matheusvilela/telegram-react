@@ -9,12 +9,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withTranslation } from 'react-i18next';
-import { getUserLetters } from '../../Utils/User';
+import { getUserLetters, isDeletedUser } from '../../Utils/User';
 import { getSrc, loadChatContent } from '../../Utils/File';
 import UserStore from '../../Stores/UserStore';
 import ChatStore from '../../Stores/ChatStore';
 import FileStore from '../../Stores/FileStore';
 import './UserTile.css';
+import DeletedAccountIcon from '../../Assets/Icons/DeletedAccount';
 
 class UserTile extends Component {
     constructor(props) {
@@ -161,11 +162,33 @@ class UserTile extends Component {
     };
 
     render() {
-        const { className, userId, fistName, lastName, onSelect, small, poll, t } = this.props;
+        const { className, userId, fistName, lastName, onSelect, small, dialog, poll, t } = this.props;
         const { loaded } = this.state;
 
         const user = UserStore.get(userId);
         if (!user && !(fistName || lastName)) return null;
+
+        if (isDeletedUser(userId)) {
+            return (
+                <div
+                    className={classNames(
+                        className,
+                        'user-tile',
+                        'tile_color_0',
+                        { pointer: onSelect },
+                        { 'tile-dialog': dialog },
+                        { 'tile-small': small },
+                        { 'tile-poll': poll }
+                    )}
+                    onClick={this.handleSelect}>
+                    <div className='tile-photo'>
+                        <div className='tile-saved-messages'>
+                            <DeletedAccountIcon fontSize='default' />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
 
         const letters = getUserLetters(userId, fistName, lastName, t);
         const src = getSrc(user && user.profile_photo ? user.profile_photo.small : null);
@@ -180,6 +203,7 @@ class UserTile extends Component {
                     'user-tile',
                     { [tileColor]: !tileLoaded },
                     { pointer: onSelect },
+                    { 'tile-dialog': dialog },
                     { 'tile-small': small },
                     { 'tile-poll': poll }
                 )}

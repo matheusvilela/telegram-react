@@ -19,6 +19,7 @@ import { setPollAnswer } from '../../../Actions/Poll';
 import MessageStore from './../../../Stores/MessageStore';
 import TdLibController from './../../../Controllers/TdLibController';
 import './Poll.css';
+import PollResultsDialog from '../../Popup/PollResultsDialog';
 
 class Poll extends React.Component {
     constructor(props) {
@@ -152,21 +153,26 @@ class Poll extends React.Component {
         return correct_option_id === index;
     }
 
-    handleOpenResults = () => {
+    handleOpenResults = event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const { poll } = this.props;
+
         this.setState({
-            viewResults: true
+            viewResultsPoll: poll
         });
     };
 
     handleCloseResults = () => {
         this.setState({
-            viewResults: false
+            viewResultsPoll: null
         });
     };
 
     render() {
         const { chatId, messageId, poll, t, meta } = this.props;
-        const { viewResults } = this.state;
+        const { viewResultsPoll } = this.state;
         const { question, options, total_voter_count, type, is_closed, is_anonymous, recent_voter_user_ids } = poll;
 
         let subtitle = t('FinalResults');
@@ -188,13 +194,14 @@ class Poll extends React.Component {
 
         const isQuiz = type && type['@type'] === 'pollTypeQuiz';
         const canBeSelected = !is_closed && options.every(x => !x.is_chosen);
+        const isSelected = !is_closed && options.some(x => x.is_chosen);
         const maxVoterCount = Math.max(...options.map(x => x.voter_count));
         const showViewResults = this.viewResults(poll);
-        const showButton = type.allow_multiple_answers || showViewResults;
+        const showButton = (type.allow_multiple_answers && !isSelected) || showViewResults;
         const buttonEnabled = showViewResults || options.some(x => x.isMultiChoosen);
         let recentVoters = [];
         if (recent_voter_user_ids) {
-            recentVoters = recent_voter_user_ids.map(id => <UserTile poll userId={id} />);
+            recentVoters = recent_voter_user_ids.map(id => <UserTile key={id} poll userId={id} />);
         }
 
         return (
@@ -218,7 +225,6 @@ class Poll extends React.Component {
                             closed={is_closed}
                             maxVoterCount={maxVoterCount}
                             onVote={() => this.handleVote(index)}
-                            onUnvote={this.handleUnvote}
                         />
                     ))}
                 </div>
@@ -242,17 +248,13 @@ class Poll extends React.Component {
                         {meta}
                     </div>
                 )}
-                {viewResults && (
-                    <Dialog
-                        transitionDuration={0}
-                        open={viewResults}
+                {Boolean(viewResultsPoll) && (
+                    <PollResultsDialog
+                        chatId={chatId}
+                        messageId={messageId}
+                        poll={viewResultsPoll}
                         onClose={this.handleCloseResults}
-                        aria-labelledby='poll-results-title'>
-                        <DialogTitle id='poll-results-title'>
-                            {isQuiz ? t('QuizResults') : t('PollResults')}
-                        </DialogTitle>
-                        <DialogContent>{}</DialogContent>
-                    </Dialog>
+                    />
                 )}
             </div>
         );

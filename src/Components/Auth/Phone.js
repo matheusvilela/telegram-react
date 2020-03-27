@@ -326,8 +326,7 @@ class Phone extends React.Component {
         if (!i18n) return;
         if (!suggestedLanguage) return;
 
-        const nextLanguage =
-            suggestedLanguage === i18n.language ? LocalizationStore.defaultLanguage : suggestedLanguage;
+        const nextLanguage = suggestedLanguage === i18n.language ? LocalizationStore.fallbackLng : suggestedLanguage;
 
         TdLibController.clientUpdate({ '@type': 'clientUpdateLanguageChange', language: nextLanguage });
     };
@@ -386,9 +385,9 @@ class Phone extends React.Component {
             // const phoneRegExp = '/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g';
 
             let phone = '';
-            for (let i = 0; i < plainText.length; i++) {
-                if (isWhitelistKey(plainText.charAt(i))) {
-                    phone += plainText.charAt(i);
+            for (let ch of plainText) {
+                if (isWhitelistKey(ch)) {
+                    phone += ch;
                 }
             }
 
@@ -411,8 +410,7 @@ class Phone extends React.Component {
         }
 
         const title = connecting ? cleanProgressStatus(t('Connecting')) : t('SignInToTelegram');
-        const nextLanguage =
-            suggestedLanguage === i18n.language ? LocalizationStore.defaultLanguage : suggestedLanguage;
+        const nextLanguage = suggestedLanguage === i18n.language ? LocalizationStore.fallbackLng : suggestedLanguage;
 
         return (
             <form className='auth-root' autoComplete='off'>

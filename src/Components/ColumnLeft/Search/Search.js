@@ -8,6 +8,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
+import KeyboardManager, { KeyboardHandler } from '../../Additional/KeyboardManager';
 import CloseIcon from '../../../Assets/Icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Chat from '../../Tile/Chat';
@@ -15,7 +16,7 @@ import TopChat from '../../Tile/TopChat';
 import RecentlyFoundChat from '../../Tile/RecentlyFoundChat';
 import FoundPublicChat from '../../Tile/FoundPublicChat';
 import FoundMessage from '../../Tile/FoundMessage';
-import SearchCaption from './SearchCaption';
+import SectionHeader from '../SectionHeader';
 import { loadChatsContent, loadUsersContent } from '../../../Utils/File';
 import { filterDuplicateMessages } from '../../../Utils/Message';
 import { getCyrillicInput, getLatinInput } from '../../../Utils/Language';
@@ -32,6 +33,7 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
 
+        this.keyboardHandler = new KeyboardHandler(this.handleKeyDown);
         this.listRef = React.createRef();
         this.state = {};
     }
@@ -40,12 +42,32 @@ class Search extends React.Component {
         const { text } = this.props;
 
         this.searchOrLoadContent(text);
+
+        KeyboardManager.add(this.keyboardHandler);
     }
 
+    componentWillUnmount() {
+        KeyboardManager.add(this.keyboardHandler);
+    }
+
+    handleKeyDown = event => {
+        switch (event.key) {
+            case 'Escape':
+                event.preventDefault();
+                event.stopPropagation();
+                event.target.blur();
+
+                this.handleClose();
+                break;
+        }
+    };
+
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const { text } = this.props;
+        const { chatId, text } = this.props;
 
         if (prevProps.text !== text) {
+            this.searchOrLoadContent(text);
+        } else if (prevProps.chatId !== chatId) {
             this.searchOrLoadContent(text);
         }
     }
@@ -89,7 +111,7 @@ class Search extends React.Component {
         const sessionId = this.sessionId;
         let store = null;
 
-        console.log('[se] searchText=' + text);
+        // console.log('[se] searchText=' + text);
 
         const { chatId } = this.props;
         const { savedMessages } = this.state;
@@ -228,7 +250,7 @@ class Search extends React.Component {
                     '@type': 'getMessageLinkInfo',
                     url: text
                 });
-                console.log('[se] searchText=' + text + ' messageLinkInfo', messageLinkInfo);
+                // console.log('[se] searchText=' + text + ' messageLinkInfo', messageLinkInfo);
 
                 MessageStore.setItems([messageLinkInfo.message]);
 
@@ -238,13 +260,13 @@ class Search extends React.Component {
             }
         }
 
-        console.log('[se] searchText=' + text + ' result', messages, linkMessage);
+        // console.log('[se] searchText=' + text + ' result', messages, linkMessage);
 
         if (sessionId !== this.sessionId) {
             return;
         }
 
-        console.log('[se] searchText=' + text + ' result session', messages, linkMessage);
+        // console.log('[se] searchText=' + text + ' result session', messages, linkMessage);
 
         this.setState({
             messages,
@@ -330,22 +352,6 @@ class Search extends React.Component {
         const store = FileStore.getStore();
         loadChatsContent(store, top.chat_ids);
         loadChatsContent(store, recentlyFound.chat_ids);
-    };
-
-    handleRecentlyFound = async () => {
-        const chats = await TdLibController.send({
-            '@type': 'getChats',
-            offset_order: '9223372036854775807',
-            offset_chat_id: 0,
-            limit: 20
-        });
-
-        for (let i = chats.chat_ids.length - 1; i >= 0; i--) {
-            TdLibController.send({
-                '@type': 'addRecentlyFoundChat',
-                chat_id: chats.chat_ids[i]
-            });
-        }
     };
 
     handleClearRecentlyFound = event => {
@@ -474,18 +480,56 @@ class Search extends React.Component {
         onClose();
     };
 
-    render() {
-        const { classes, chatId } = this.props;
-        const { top, recentlyFound, local, global, messages, linkMessage } = this.state;
+    handleDeleteRecentlyFoundChat = async chatId => {
+        if (!chatId) return;
 
-        console.log('[se] render', messages, linkMessage);
+        await TdLibController.send({
+            '@type': 'removeRecentlyFoundChat',
+            chat_id: chatId
+        });
+
+        const { recentlyFound } = this.state;
+        if (!recentlyFound) return;
+
+        this.setState({
+            recentlyFound: { ...recentlyFound, chat_ids: recentlyFound.chat_ids.filter(x => x !== chatId) }
+        });
+    };
+
+    handleDeleteTopChat = async chatId => {
+        if (!chatId) return;
+
+        await TdLibController.send({
+            '@type': 'removeTopChat',
+            chat_id: chatId,
+            category: {
+                '@type': 'topChatCategoryUsers'
+            }
+        });
+
+        const { top } = this.state;
+        if (!top) return;
+
+        this.setState({
+            top: { ...top, chat_ids: top.chat_ids.filter(x => x !== chatId) }
+        });
+    };
+
+    render() {
+        const { chatId, t } = this.props;
+        const { top, recentlyFound, local, global, messages, linkMessage } = this.state;
 
         const chat = ChatStore.get(chatId);
 
         const topChats =
             top && top.chat_ids
                 ? top.chat_ids.map(x => (
-                      <TopChat key={x} chatId={x} onSelect={() => this.handleSelectMessage(x, null, false, false)} />
+                      <TopChat
+                          key={x}
+                          chatId={x}
+                          onSelect={() => this.handleSelectMessage(x, null, false, false)}
+                          onDelete={() => this.handleDeleteTopChat(x)}
+                      />
                   ))
                 : [];
 
@@ -496,6 +540,7 @@ class Search extends React.Component {
                           key={x}
                           chatId={x}
                           onClick={() => this.handleSelectMessage(x, null, true, false)}
+                          onDelete={() => this.handleDeleteRecentlyFoundChat(x)}
                       />
                   ))
                 : [];
@@ -577,7 +622,7 @@ class Search extends React.Component {
             count++;
         }
 
-        let messagesCaption = 'No messages found';
+        let messagesCaption = t('NoMessages');
         if (count) {
             messagesCaption = count === 1 ? 'Found 1 message' : `Found ${count} messages`;
         }
@@ -585,53 +630,67 @@ class Search extends React.Component {
         return (
             <div ref={this.listRef} className='search' onScroll={this.handleScroll}>
                 {chat && (
-                    <div className='search-chat'>
-                        <SearchCaption caption='Search messages in' />
-                        <div className='search-chat-wrapper'>
-                            <div className='search-chat-control'>
-                                <Chat chatId={chatId} showStatus={false} />
+                    <>
+                        <div className='sidebar-page-section'>
+                            <SectionHeader>{t('SearchMessagesIn')}</SectionHeader>
+                            <div className='search-chat-wrapper'>
+                                <div className='search-chat-control'>
+                                    <Chat chatId={chatId} showStatus={false} />
+                                </div>
+                                <IconButton
+                                    className='header-right-button'
+                                    aria-label='Search'
+                                    onMouseDown={this.handleClose}>
+                                    <CloseIcon />
+                                </IconButton>
                             </div>
-                            <IconButton
-                                className='header-right-button'
-                                aria-label='Search'
-                                onMouseDown={this.handleClose}>
-                                <CloseIcon />
-                            </IconButton>
                         </div>
-                    </div>
+                        <div className='sidebar-page-section-divider' />
+                    </>
                 )}
                 {topChats.length > 0 && (
-                    <div className='search-top-chats'>
-                        <SearchCaption caption='People' />
-                        <div className='search-top-chats-list' onScroll={this.handleTopChatsScroll}>
-                            <div className='search-top-chats-placeholder' />
-                            {topChats}
-                            <div className='search-top-chats-placeholder' />
+                    <>
+                        <div className='sidebar-page-section'>
+                            <SectionHeader>{t('ChatHints')}</SectionHeader>
+                            <div className='search-top-chats-list' onScroll={this.handleTopChatsScroll}>
+                                <div className='search-top-chats-placeholder' />
+                                {topChats}
+                                <div className='search-top-chats-placeholder' />
+                            </div>
                         </div>
-                    </div>
+                        <div className='sidebar-page-section-divider' />
+                    </>
                 )}
                 {recentlyFoundChats.length > 0 && (
-                    <div className='search-recently-found-chats'>
-                        <SearchCaption caption='Recent' command='Clear' onClick={this.handleClearRecentlyFound} />
+                    <div className='sidebar-page-section'>
+                        <SectionHeader command={t('ClearButton')} onClick={this.handleClearRecentlyFound}>
+                            {t('Recent')}
+                        </SectionHeader>
                         {recentlyFoundChats}
                     </div>
                 )}
                 {localChats.length > 0 && (
-                    <div className='search-local-chats'>
-                        <SearchCaption caption='Chats and contacts' />
-                        {localChats}
-                    </div>
+                    <>
+                        <div className='sidebar-page-section'>
+                            <SectionHeader>{t('ChatsAndContacts')}</SectionHeader>
+                            {localChats}
+                        </div>
+                        <div className='sidebar-page-section-divider' />
+                    </>
                 )}
                 {globalChats.length > 0 && (
-                    <div className='search-global-chats'>
-                        <SearchCaption caption='Global search' />
-                        {globalLinkChat}
-                        {globalChats}
-                    </div>
+                    <>
+                        <div className='sidebar-page-section'>
+                            <SectionHeader>{t('GlobalSearch')}</SectionHeader>
+                            {globalLinkChat}
+                            {globalChats}
+                        </div>
+                        <div className='sidebar-page-section-divider' />
+                    </>
                 )}
                 {(messages || (linkMessage && linkMessage.message)) && (
-                    <div className='search-global-chats'>
-                        <SearchCaption caption={messagesCaption} />
+                    <div className='sidebar-page-section'>
+                        <SectionHeader>{messagesCaption}</SectionHeader>
                         {globalLinkMessage}
                         {globalMessages}
                     </div>

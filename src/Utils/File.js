@@ -54,10 +54,10 @@ function getSizeString(size) {
 }
 
 function getFileSize(file) {
-    if (!file) return null;
+    if (!file) return '';
 
     let size = file.size;
-    if (!size) return null;
+    if (!size) return '';
 
     return getSizeString(size);
 }
@@ -1731,6 +1731,40 @@ function loadStickerSetContent(store, stickerSet) {
 
     const { stickers } = stickerSet;
     loadStickersContent(store, stickers);
+}
+
+export function loadBackgroundsContent(store, backgrounds) {
+    if (!backgrounds) return;
+
+    backgrounds.forEach(background => {
+        loadBackgroundContent(store, background, false);
+    });
+}
+
+export function loadBackgroundContent(store, background, full = false) {
+    if (!background) return;
+
+    switch (background.type['@type']) {
+        case 'backgroundTypeFill': {
+            break;
+        }
+        case 'backgroundTypePattern': {
+            const { document } = background;
+            if (document) {
+                loadDocumentThumbnailContent(store, document, null);
+                if (full) loadDocumentContent(store, document, null, false);
+            }
+            break;
+        }
+        case 'backgroundTypeWallpaper': {
+            const { document } = background;
+            if (document) {
+                loadDocumentThumbnailContent(store, document, null);
+                if (full) loadDocumentContent(store, document, null, false);
+            }
+            break;
+        }
+    }
 }
 
 function loadStickersContent(store, stickers) {
