@@ -8,7 +8,7 @@
 import SupergroupStore from '../Stores/SupergroupStore';
 import ChatStore from '../Stores/ChatStore';
 
-function getSupergroupStatus(supergroup, chatId) {
+export function getSupergroupStatus(supergroup, chatId) {
     if (!supergroup) return null;
 
     let { status, is_channel, member_count: count } = supergroup;
@@ -34,5 +34,3 @@ function getSupergroupStatus(supergroup, chatId) {
 
     return `${count} members`;
 }
-
-export { getSupergroupStatus };

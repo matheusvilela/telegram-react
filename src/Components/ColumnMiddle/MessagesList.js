@@ -20,7 +20,7 @@ import { throttle, getPhotoSize, itemsInView, historyEquals } from '../../Utils/
 import { loadChatsContent, loadDraftContent, loadMessageContents } from '../../Utils/File';
 import { canMessageBeEdited, filterDuplicateMessages, filterMessages } from '../../Utils/Message';
 import { isServiceMessage } from '../../Utils/ServiceMessage';
-import { canSendMediaMessages, getChatFullInfo, getSupergroupId, isChannelChat } from '../../Utils/Chat';
+import { canSendMediaMessages, getChatFullInfo, getSupergroupId, isChannelChat, isPrivateChat } from '../../Utils/Chat';
 import { highlightMessage, openChat } from '../../Actions/Client';
 import { MESSAGE_SLICE_LIMIT, MESSAGE_SPLIT_MAX_TIME_S, SCROLL_PRECISION } from '../../Constants';
 import AppStore from '../../Stores/ApplicationStore';
@@ -63,6 +63,7 @@ class MessagesList extends React.Component {
 
         this.listRef = React.createRef();
         this.itemsRef = React.createRef();
+        this.scrollDownButtonRef = React.createRef();
 
         this.defferedActions = [];
         this.itemsMap = new Map();
@@ -180,8 +181,6 @@ class MessagesList extends React.Component {
     }
 
     componentDidMount() {
-        // document.addEventListener('keydown', this.onKeyDown, false);
-
         AppStore.on('clientUpdateFocusWindow', this.onClientUpdateFocusWindow);
         AppStore.on('clientUpdateDialogsReady', this.onClientUpdateDialogsReady);
         ChatStore.on('clientUpdateClearHistory', this.onClientUpdateClearHistory);
@@ -200,8 +199,6 @@ class MessagesList extends React.Component {
     }
 
     componentWillUnmount() {
-        // document.removeEventListener('keydown', this.onKeyDown, false);
-
         AppStore.off('clientUpdateFocusWindow', this.onClientUpdateFocusWindow);
         AppStore.off('clientUpdateDialogsReady', this.onClientUpdateDialogsReady);
         ChatStore.off('clientUpdateClearHistory', this.onClientUpdateClearHistory);
@@ -444,6 +441,9 @@ class MessagesList extends React.Component {
         const { chatId } = this.props;
         if (chatId !== message.chat_id) return;
 
+        const { date } = message;
+        if (date === 0) return;
+
         const list = this.listRef.current;
 
         let scrollBehavior = message.is_outgoing ? ScrollBehaviorEnum.SCROLL_TO_BOTTOM : ScrollBehaviorEnum.NONE;
@@ -483,7 +483,7 @@ class MessagesList extends React.Component {
         for (let i = 0; i < items.length; i++) {
             const messageWrapper = this.messages[items[i]];
             if (messageWrapper) {
-                const message = messageWrapper.props.children[1];
+                const message = messageWrapper;
                 const { chatId, messageId } = message.props;
                 const key = `${chatId}_${messageId}`;
                 messages.set(key, key);
@@ -1286,16 +1286,12 @@ class MessagesList extends React.Component {
                               showTitle={showTitle}
                               showTail={showTail}
                               showUnreadSeparator={separatorMessageId === x.id}
+                              showDate={showDate}
                           />
                       );
                   }
 
-                  return (
-                      <div key={`chat_id=${x.chat_id} message_id=${x.id}`}>
-                          {showDate && <DayMeta date={x.date} />}
-                          {m}
-                      </div>
-                  );
+                  return m;
               });
 
         return (
@@ -1312,7 +1308,9 @@ class MessagesList extends React.Component {
                 </div>
                 <ActionBar chatId={chatId} />
                 <Placeholder />
-                {scrollDownVisible && <ScrollDownButton onClick={this.handleScrollDownClick} />}
+                {scrollDownVisible && (
+                    <ScrollDownButton ref={this.scrollDownButtonRef} onClick={this.handleScrollDownClick} />
+                )}
                 <FilesDropTarget />
                 <StickersHint />
             </div>

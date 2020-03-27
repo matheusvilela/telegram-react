@@ -10,7 +10,7 @@ export async function loadData() {
     if (data) return;
 
     try {
-        const response = await fetch('data/countries.dat');
+        const response = await fetch('data/countries.txt');
         const text = await response.text();
 
         const lines = text.split('\n');
@@ -32,6 +32,8 @@ export async function loadData() {
         });
 
         data = data2.filter(x => x.emoji);
+
+        return data;
     } catch (error) {
         console.error(error);
     }
@@ -53,7 +55,7 @@ function isPhoneWithOptionCode(phone, option) {
     phone = clearPhone(phone);
     const code = clearPhone(option.phone);
 
-    return phone.startsWith(code);
+    return phone.startsWith(code) && option.pattern;
 }
 
 function getCountryFromPhone(phone, data) {
@@ -88,10 +90,11 @@ function formatByPattern(phone, pattern) {
 }
 
 export function formatPhoneNumber(phone) {
-    if (!data) return phone;
+    if (!phone) return phone;
+    if (!data) return phone.startsWith('+') ? phone : '+' + phone;
 
     const country = getCountryFromPhone(phone, data);
-    if (!country) return phone;
+    if (!country) return phone.startsWith('+') ? phone : '+' + phone;
 
     return formatByPattern(phone, country.pattern);
 }

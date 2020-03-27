@@ -9,6 +9,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withTranslation } from 'react-i18next';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Popover from '@material-ui/core/Popover';
@@ -17,7 +19,24 @@ import DialogContent from './DialogContent';
 import DialogBadge from './DialogBadge';
 import DialogTitle from './DialogTitle';
 import DialogMeta from './DialogMeta';
-import { canSetChatChatList, isChatArchived, isChatMuted, isChatSecret, isChatUnread } from '../../Utils/Chat';
+import ArchiveIcon from '../../Assets/Icons/Archive';
+import UnarchiveIcon from '../../Assets/Icons/Unarchive';
+import PinIcon from '../../Assets/Icons/Pin2';
+import UnpinIcon from '../../Assets/Icons/Pin2';
+import MuteIcon from '../../Assets/Icons/Mute';
+import UnmuteIcon from '../../Assets/Icons/Unmute';
+import UserIcon from '../../Assets/Icons/User';
+import GroupIcon from '../../Assets/Icons/Group';
+import MessageIcon from '../../Assets/Icons/Message';
+import UnreadIcon from '../../Assets/Icons/Unread';
+import {
+    canSetChatChatList,
+    isChatArchived,
+    isChatMuted,
+    isChatSecret,
+    isChatUnread,
+    isPrivateChat
+} from '../../Utils/Chat';
 import {
     setChatChatList,
     toggleChatIsMarkedAsUnread,
@@ -33,6 +52,8 @@ import TdLibController from '../../Controllers/TdLibController';
 import './Dialog.css';
 
 class Dialog extends Component {
+    static contextMenuId;
+
     constructor(props) {
         super(props);
 
@@ -48,29 +69,40 @@ class Dialog extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        const { chatId, t, hidden, isLastPinned } = this.props;
+        const { chatId, t, hidden, isLastPinned, style } = this.props;
         const { contextMenu } = this.state;
 
         if (nextProps.chatId !== chatId) {
+            // console.log('[vl] Dialog.shouldUpdate true chatId');
             return true;
         }
 
         if (nextProps.t !== t) {
+            // console.log('[vl] Dialog.shouldUpdate true t');
             return true;
         }
 
         if (nextProps.hidden !== hidden) {
+            // console.log('[vl] Dialog.shouldUpdate true hidden');
             return true;
         }
 
         if (nextProps.isLastPinned !== isLastPinned) {
+            // console.log('[vl] Dialog.shouldUpdate true isLastPinned');
             return true;
         }
 
         if (nextState.contextMenu !== contextMenu) {
+            // console.log('[vl] Dialog.shouldUpdate true contextMenu');
             return true;
         }
 
+        if (nextProps.style && style && style.top !== nextProps.style.top) {
+            // console.log('[vl] Dialog.shouldUpdate true style');
+            return true;
+        }
+
+        // console.log('[vl] Dialog.shouldUpdate false');
         return false;
     }
 
@@ -107,12 +139,19 @@ class Dialog extends Component {
         if (contextMenu) {
             this.setState({ contextMenu: false });
         } else {
+            const contextMenuId = new Date();
+            Dialog.contextMenuId = contextMenuId;
+
             const left = event.clientX;
             const top = event.clientY;
             const chat = ChatStore.get(chatId);
             const { is_pinned } = chat;
             const canTogglePin = (await this.canPinChats(chatId)) || is_pinned;
             const canToggleArchive = canSetChatChatList(chatId);
+
+            if (Dialog.contextMenuId !== contextMenuId) {
+                return;
+            }
 
             this.setState({
                 contextMenu: true,
@@ -242,7 +281,7 @@ class Dialog extends Component {
     };
 
     render() {
-        const { chatId, showSavedMessages, hidden, t, isLastPinned } = this.props;
+        const { chatId, showSavedMessages, hidden, t, isLastPinned, style } = this.props;
         const { contextMenu, left, top, canToggleArchive, canTogglePin } = this.state;
 
         if (hidden) return null;
@@ -255,60 +294,132 @@ class Dialog extends Component {
         const isUnread = isChatUnread(chatId);
         const isArchived = isChatArchived(chatId);
         return (
-            <>
-                <div
-                    ref={this.dialog}
-                    className={classNames(isSelected ? 'dialog-active' : 'dialog', { 'item-selected': isSelected })}
-                    onMouseDown={this.handleSelect}
-                    onContextMenu={this.handleContextMenu}>
-                    <div className='dialog-wrapper'>
-                        <ChatTile chatId={chatId} showSavedMessages={showSavedMessages} showOnline />
-                        <div className='dialog-inner-wrapper'>
-                            <div className='tile-first-row'>
-                                <DialogTitle chatId={chatId} />
-                                <DialogMeta chatId={chatId} />
-                            </div>
-                            <div className='tile-second-row'>
-                                <DialogContent chatId={chatId} />
-                                <DialogBadge chatId={chatId} />
-                            </div>
+            <div
+                ref={this.dialog}
+                className={classNames(isSelected ? 'dialog-active' : 'dialog', { 'item-selected': isSelected })}
+                onMouseDown={this.handleSelect}
+                onContextMenu={this.handleContextMenu}
+                style={style}>
+                <div className='dialog-wrapper'>
+                    <ChatTile chatId={chatId} dialog showSavedMessages={showSavedMessages} showOnline />
+                    <div className='dialog-inner-wrapper'>
+                        <div className='tile-first-row'>
+                            <DialogTitle chatId={chatId} />
+                            <DialogMeta chatId={chatId} />
+                        </div>
+                        <div className='tile-second-row'>
+                            <DialogContent chatId={chatId} />
+                            <DialogBadge chatId={chatId} />
                         </div>
                     </div>
-                    <Popover
-                        open={contextMenu}
-                        onClose={this.handleCloseContextMenu}
-                        anchorReference='anchorPosition'
-                        anchorPosition={{ top, left }}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right'
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left'
-                        }}
-                        onMouseDown={e => e.stopPropagation()}>
-                        <MenuList onClick={e => e.stopPropagation()}>
-                            {canToggleArchive && (
-                                <MenuItem onClick={this.handleArchive}>
-                                    {isArchived ? t('Unarchive') : t('Archive')}
-                                </MenuItem>
-                            )}
-                            {canTogglePin && (
-                                <MenuItem onClick={this.handlePin}>
-                                    {is_pinned ? t('UnpinFromTop') : t('PinToTop')}
-                                </MenuItem>
-                            )}
-                            <MenuItem onClick={this.handleViewInfo}>{this.getViewInfoTitle()}</MenuItem>
-                            <MenuItem onClick={this.handleMute}>{isMuted ? t('ChatsUnmute') : t('ChatsMute')}</MenuItem>
-                            <MenuItem onClick={this.handleRead}>
-                                {isUnread ? t('MarkAsRead') : t('MarkAsUnread')}
-                            </MenuItem>
-                        </MenuList>
-                    </Popover>
                 </div>
-                {/*{isLastPinned && <div className='dialog-bottom-separator'/>}*/}
-            </>
+                <Popover
+                    open={contextMenu}
+                    onClose={this.handleCloseContextMenu}
+                    anchorReference='anchorPosition'
+                    anchorPosition={{ top, left }}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right'
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left'
+                    }}
+                    onMouseDown={e => e.stopPropagation()}>
+                    <MenuList onClick={e => e.stopPropagation()}>
+                        {canToggleArchive && (
+                            <MenuItem onClick={this.handleArchive}>
+                                {isArchived ? (
+                                    <>
+                                        <ListItemIcon>
+                                            <UnarchiveIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={t('Unarchive')} />
+                                    </>
+                                ) : (
+                                    <>
+                                        <ListItemIcon>
+                                            <ArchiveIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={t('Archive')} />
+                                    </>
+                                )}
+                            </MenuItem>
+                        )}
+                        {canTogglePin && (
+                            <MenuItem onClick={this.handlePin}>
+                                {is_pinned ? (
+                                    <>
+                                        <ListItemIcon>
+                                            <UnpinIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={t('UnpinFromTop')} />
+                                    </>
+                                ) : (
+                                    <>
+                                        <ListItemIcon>
+                                            <PinIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={t('PinToTop')} />
+                                    </>
+                                )}
+                            </MenuItem>
+                        )}
+                        <MenuItem onClick={this.handleViewInfo}>
+                            {isPrivateChat(chatId) ? (
+                                <>
+                                    <ListItemIcon>
+                                        <UserIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={this.getViewInfoTitle()} />
+                                </>
+                            ) : (
+                                <>
+                                    <ListItemIcon>
+                                        <GroupIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={this.getViewInfoTitle()} />
+                                </>
+                            )}
+                        </MenuItem>
+                        <MenuItem onClick={this.handleMute}>
+                            {isMuted ? (
+                                <>
+                                    <ListItemIcon>
+                                        <UnmuteIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={t('ChatsUnmute')} />
+                                </>
+                            ) : (
+                                <>
+                                    <ListItemIcon>
+                                        <MuteIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={t('ChatsMute')} />
+                                </>
+                            )}
+                        </MenuItem>
+                        <MenuItem onClick={this.handleRead}>
+                            {isUnread ? (
+                                <>
+                                    <ListItemIcon>
+                                        <MessageIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={t('MarkAsRead')} />
+                                </>
+                            ) : (
+                                <>
+                                    <ListItemIcon>
+                                        <UnreadIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={t('MarkAsUnread')} />
+                                </>
+                            )}
+                        </MenuItem>
+                    </MenuList>
+                </Popover>
+            </div>
         );
     }
 }
@@ -317,7 +428,8 @@ Dialog.propTypes = {
     chatId: PropTypes.number.isRequired,
     hidden: PropTypes.bool,
     showSavedMessages: PropTypes.bool,
-    isLastPinned: PropTypes.bool
+    isLastPinned: PropTypes.bool,
+    style: PropTypes.object
 };
 
 Dialog.defaultProps = {
